@@ -9,7 +9,9 @@ python = 3.9.13
    
     If you use anaconda:
 
-    `$ conda create -n itu python=3.9.13`
+    ```
+    $ conda create -n itu python=3.9.13
+    ```
 
     If you use venv:
   
@@ -19,5 +21,7 @@ python = 3.9.13
     ```
 
 2. Switch to project directory
-
-    $ cd <your path>/repository name
+   
+   ```
+   $ cd <your path>/repository name
+   ```
