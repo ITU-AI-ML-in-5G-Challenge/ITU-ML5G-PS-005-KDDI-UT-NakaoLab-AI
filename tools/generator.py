@@ -1,4 +1,5 @@
 import numpy as np
+from tensorflow.keras.utils import Sequence
 
 
 class ReccurentTrainingGenerator(Sequence):
