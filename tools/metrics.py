@@ -33,6 +33,9 @@ class Evaluation:
         ax.plot(x[i*70+self.timesteps+self.delay:(i+1)*70], pred_vis[i], label='y_pred', c='r')
       else:
         ax.plot(x[i*70+self.timesteps+self.delay:(i+1)*70], pred_vis[i], c='r')
+    ax.set_xlabel('time')
+    ax.set_ylabel('UE registration Failure')
+    ax.set_title('Prediction Sample')
     ax.legend()
     plt.show()
   
