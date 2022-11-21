@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+from sklearn.preprocessing import MinMaxScaler
 
 class Processor:
   def __init__(self, training_data, test_data):
@@ -12,14 +13,17 @@ class Processor:
     self.train_data.drop(self.train_data.columns[self.train_data.columns.str.contains('name')], axis=1, inplace=True)
     self.test_data.drop(self.test_data.columns[self.test_data.columns.str.contains('name')], axis=1, inplace=True)
     
-    self.max = np.max(self.train_data)
-    self.min = np.min(self.train_data)
+    scaler = MinMaxScaler()
+
+    scaler.fit(self.train_data)
+    self.scaled_train = scaler.transform(self.train_data)
+    self.scaled_test = scaler.transform(self.test_data)
     
-    self.scaled_train = (self.train_data - self.min) / (self.max - self.min)
-    self.scaled_test = (self.test_data - self.min) / (self.max - self.min)
+    self.scaled_train[np.isnan(self.scaled_train)] = 0
+    self.scaled_test[np.isnan(self.scaled_test)] = 0
     
-    self.scaled_train[self.scaled_train.isnull()] = 0
-    self.scaled_test[self.scaled_test.isnull()] = 0
+    self.scaled_train = pd.DataFrame(self.scaled_train, columns=self.train_data.columns)
+    self.scaled_test = pd.DataFrame(self.scaled_test, columns=self.test_data.columns)
     
     self.train_Y = self.scaled_train["amf.amf.app.five-g.RM.RegInitFail"]
     self.test_Y = self.scaled_test["amf.amf.app.five-g.RM.RegInitFail"]
@@ -29,6 +33,13 @@ class Processor:
     
   def get_scaled_data(self):
     return self.train_X, self.train_Y, self.test_X, self.test_Y 
+  
+  def get_removed_data(self):
+    train_sum = self.train_X.sum()
+    train_zero = set(train_sum[train_sum==0].index)
+    removed_train_X = self.train_X.drop(train_zero, axis=1, inplace=False)
+    removed_test_X = self.test_X.drop(train_zero, axis=1, inplace=False)
+    return removed_train_X, self.train_Y, removed_test_X, self.test_Y
   
   def _calc_diff(self):
     normal_mean = np.mean(self.train_X[self.train_label=="normal"])
