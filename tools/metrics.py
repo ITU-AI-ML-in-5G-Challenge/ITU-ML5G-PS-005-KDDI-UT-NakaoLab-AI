@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.pylab import rcParams
 from sklearn import metrics
@@ -19,7 +20,10 @@ class Evaluation:
     label_600 = self.label.reshape(300,-1)[:,-10]
     test_ = [0 if i=='normal' else 1 for i in label_600]
     pred_ = [0 if i<self.threshold else 1 for i in pred_600]
-    print(metrics.confusion_matrix(test_, pred_))
+    confusion_matrix = pd.DataFrame(metrics.confusion_matrix(test_, pred_),
+                                    columns = ['normal prediction', 'loss prediction'],
+                                    index = ['Actual normal', 'Actual loss'])
+    print(confusion_matrix)
     print(metrics.classification_report(test_, pred_))
     
   def visualization(self):
