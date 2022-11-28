@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import pickle
 from sklearn.preprocessing import MinMaxScaler
 
 class Processor:
@@ -49,5 +50,17 @@ class Processor:
   def get_diff_data(self):
     diff_columns = self._calc_diff()
     return self.train_X[diff_columns], self.train_Y, self.test_X[diff_columns], self.test_Y
+  
+  def get_RF_data(self, metrics_num=500):
+    train_X_smf = self.train_X.drop('smf.smf.app.five-g.SM.PduSessionCreationFailNSI', axis=1)
+    test_X_smf = self.test_X.drop('smf.smf.app.five-g.SM.PduSessionCreationFailNSI', axis=1)
+    with open('data/feature_importance.pkl', 'rb') as f:
+      features = pickle.load(f)
+    indices = np.argsort(features)[:(metrics_num-1)]
+    train_RF = train_X_smf.iloc[:,indices].copy()
+    test_RF = test_X_smf.iloc[:,indices].copy()
+    train_RF.loc[:,'smf.smf.app.five-g.SM.PduSessionCreationFailNSI'] = self.train_X['smf.smf.app.five-g.SM.PduSessionCreationFailNSI'].values
+    test_RF.loc[:,'smf.smf.app.five-g.SM.PduSessionCreationFailNSI'] = self.test_X['smf.smf.app.five-g.SM.PduSessionCreationFailNSI'].values
+    return train_RF, self.train_Y, test_RF, self.test_Y
     
     
