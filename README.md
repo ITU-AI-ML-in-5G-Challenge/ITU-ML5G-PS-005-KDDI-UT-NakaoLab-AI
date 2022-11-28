@@ -1,50 +1,28 @@
 # ITU-ML5G-PS-005-KDDI-UT-NakaoLab-AI
 
 # Environment
-linux ubuntu 20.04 LTS<br>
-python = 3.9.13
+Please use Google Colab.
 
-# Getting Started
-1. Create virtual environment
+Runtime type : GPU
+
+GPU type : Nvidia Tesla K80
+
+# How to evaluate and train
+Please download this repository and place it under your google drive directory.
+
+If you want to evaluate the model I've created, please open and run evaluate.ipynb.
+
+If you want to create your own model, please open and run train.ipynb.
+
+# Description of Evaluation class
+1. evaluation.score()
    
-    If you use anaconda:
+   This function prints the confusion matrix and calculates precision, recall and F1 score.
 
-    ```
-    $ conda create -n itu python=3.9.13
-    $ conda activate itu
-    ```
+2. evaluation.MSE()
 
-    If you use venv:
-  
-    ```
-    $ sudo apt install -y python3-venv
-    $ python3 -m venv ~/python/itu
-    $ source ~/python/itu/bin/activate
-    ```
+   This function calculates MSE(mean squared error).
 
-2. Switch to project directory
-   
-   ```
-   $ cd <your path>/repository name
-   ```
-3. Install libraries
-   
-   ```
-   $ pip install -r requirements.txt
-   ```
+3. evaluation.visualization()
 
-4. Install tensorflow
-   
-   If you use M1 mac:
-  
-   ```
-   $ conda install -c apple tensorflow-deps==2.9.0
-   $ pip install tensorflow-macos==2.9.0
-   $ pip install tensorflow-metal
-   ```
-
-   else:
-
-   ```
-   $ pip install tensorflow==2.9.0
-   ```
+   This function illustrates the predicted results and the actual number of UE registration failures from the last 20 to 10 cycles of the test data.
