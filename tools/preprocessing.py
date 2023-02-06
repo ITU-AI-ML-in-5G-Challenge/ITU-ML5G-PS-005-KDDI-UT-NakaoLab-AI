@@ -64,3 +64,7 @@ class Processor:
     test_RF.loc[:,'smf.smf.app.five-g.SM.PduSessionCreationFailNSI'] = self.test_X['smf.smf.app.five-g.SM.PduSessionCreationFailNSI'].values
     return train_RF, self.train_Y, test_RF, self.test_Y    
     
+  def get_cadvisor_data(self):
+    cad_train_X = self.train_X.loc[:,~self.train_X.columns.str.contains("infra")]
+    cad_test_X = self.test_X.loc[:,~self.test_X.columns.str.contains("infra")]
+    return cad_train_X, self.train_Y, cad_test_X, self.test_Y
